@@ -1,22 +1,22 @@
-SOURCE= scheduler.h myscheduler.cpp Project1.cpp
+# CMPSC473 - Assignment 1
+# Makefile
 
-MYPROGRAM=project1
+CC = gcc
+CFLAGS = -g -Wall
 
-CC=g++
+default: thread
 
-#------------------------------------------------------------------------------
+thread: myscheduler.o Project1.o scheduler.o
+	$(CC) $(CFLAGS) -o thread myscheduler.o Project1.o scheduler.o
 
+myscheduler.o: myscheduler.cpp myscheduler.h
+	$(CC) $(CFLAGS) -c myscheduler.cpp
 
+Project1.o: Project1.cpp
+	$(CC) $(CFLAGS) -c Project1.cpp
 
-all: $(MYPROGRAM)
+scheduler.o: scheduler.cpp
+	$(CC) $(CFLAGS)-c scheduler.cpp
 
-
-
-$(MYPROGRAM): $(SOURCE)
-
-	$(CC) $(SOURCE) -o$(MYPROGRAM) 
-
-clean:
-
-	rm -f $(MYPROGRAM)
-
+Clean:
+	$(RM) thread *.o *~
