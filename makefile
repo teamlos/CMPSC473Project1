@@ -16,4 +16,4 @@ Project1.o: Project1.cpp
 	$(CC) $(CFLAGS) -c Project1.cpp
 
 clean:
-	$(RM) thread *.o *~
+	$(RM) thread *.h.gch *.o *~
