@@ -17,6 +17,10 @@
 	*
 	*
 	*/
+struct Holder{
+
+	ThreadDescriptorBlock threadInfo;
+};
 
 class MyScheduler: public Scheduler {
 public:
