@@ -9,30 +9,27 @@
    which they might find helpful.*/
 
 #include "scheduler.h"
+#include <vector>
 
 //Define your data structure here.
-	/*
-	*
-	*
-	*
-	*
-	*/
 struct Holder{
 
-	ThreadDescriptorBlock threadInfo;
+	std::vector<ThreadDescriptorBlock> threadInfo;
 };
 
 class MyScheduler: public Scheduler {
+private:
+
+	Holder holdee;
 public:
+	
 	MyScheduler(Policy p, unsigned int n) : Scheduler(p, n) {}
-	bool Dispatch() override; //Function to implement scheduling policy and to keep a check on processed threads
-	void CreateThread(int arriving_time, int remaining_time, int priority, int tid) override; //Function to create threads and insert them in student defined data structure
+	bool Dispatch(); //Function to implement scheduling policy and to keep a check on processed threads
+	void CreateThread(int arriving_time, int remaining_time, int priority, int tid); //Function to create threads and insert them in student defined data structure
 
 	//Declare additional methods(s) below if needed.
-	/*
-	*
-	*
-	*
-	*
-	*/
+	bool FCFS_fun();
+	bool STRFwoP_fun();
+	bool STRFwP_fun();
+	bool PBS_fun();
 };
