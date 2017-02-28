@@ -43,7 +43,18 @@ bool MyScheduler::Dispatch()
 
 bool MyScheduler::FCFS_fun()
 {
+	
+	for(int i=0; i< holdee.threadInfo.size(); i++)
+	{
+				
+		CPUs[i]->tid = holdee.threadInfo.front().tid;
+		CPUs[i]->remaining_time = holdee.threadInfo.front().remaining_time;
+		CPUs[i]->arriving_time = holdee.threadInfo.front().arriving_time;
+		CPUs[i]->priority = holdee.threadInfo.front().priority;
 
+		holdee.threadInfo.erase(holdee.threadInfo.begin());
+
+	}
 	return false;
 
 }
