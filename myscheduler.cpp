@@ -6,11 +6,11 @@ void MyScheduler::CreateThread(int arriving_time, int remaining_time, int priori
 {	
 	//Function to Create Thread(s) and insert them in the student
 	//defined data structure
-	ThreadDescriptorBlock hold;
-	hold.tid= tid;
-	hold.remaining_time=remaining_time;
-	hold.arriving_time= arriving_time;
-	hold.priority = priority;
+	ThreadDescriptorBlock *hold = new ThreadDescriptorBlock;
+	hold->tid= tid;
+	hold->remaining_time=remaining_time;
+	hold->arriving_time= arriving_time;
+	hold->priority = priority;
 
 	holdee.threadInfo.push_back(hold);
 	
@@ -47,15 +47,15 @@ bool MyScheduler::FCFS_fun()
 	for(int i=0; i< holdee.threadInfo.size(); i++)
 	{
 				
-		CPUs[i]->tid = holdee.threadInfo.front().tid;
-		CPUs[i]->remaining_time = holdee.threadInfo.front().remaining_time;
-		CPUs[i]->arriving_time = holdee.threadInfo.front().arriving_time;
-		CPUs[i]->priority = holdee.threadInfo.front().priority;
-
+		//CPUs[i]->tid = holdee.threadInfo.front().tid;
+		//CPUs[i]->remaining_time = holdee.threadInfo.front().remaining_time;
+		//CPUs[i]->arriving_time = holdee.threadInfo.front().arriving_time;
+		//CPUs[i]->priority = holdee.threadInfo.front().priority;
+		CPUs[i] = holdee.threadInfo.front();	
 		holdee.threadInfo.erase(holdee.threadInfo.begin());
 
 	}
-	return false;
+	return true;
 
 }
 

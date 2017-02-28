@@ -14,7 +14,7 @@
 //Define your data structure here.
 struct Holder{
 
-	std::vector<ThreadDescriptorBlock> threadInfo;
+	std::vector<ThreadDescriptorBlock*> threadInfo;
 };
 
 class MyScheduler: public Scheduler {
