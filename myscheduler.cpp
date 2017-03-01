@@ -12,18 +12,18 @@ void MyScheduler::CreateThread(int arriving_time, int remaining_time, int priori
 	hold->arriving_time= arriving_time;
 	hold->priority = priority;
 	
-	switch(policy)
+	/*switch(policy)
 	{
 		case FCFS://First Come First Serve
 			
 
-			if( holdee.threadInfo.empty)
+			if( holdee.threadInfo.size() == 0)
 			{
-				holdee.threadInfo.insert(hold);
+				holdee.threadInfo.push_back(hold);
 			}
 			else if(holdee.threadInfo.front()->arriving_time <= arriving_time)
 			{
-				holdee.threadInfo.emplace_front(hold);
+				holdee.threadInfo.emplace(holdee.threadInfo.begin(),hold);
 			}
 			else
 			{
@@ -43,8 +43,8 @@ void MyScheduler::CreateThread(int arriving_time, int remaining_time, int priori
 			cout<<"Invalid policy!";
 			throw 0;
 	}
-
-	//holdee.threadInfo.push_back(hold);
+*/
+	holdee.threadInfo.push_back(hold);
 	
 }
 
@@ -75,17 +75,13 @@ bool MyScheduler::Dispatch()
 
 bool MyScheduler::FCFS_fun()
 {
+	int pos= retminarr(holdee.threadInfo);
 	
-	for(int i=0; i< holdee.threadInfo.size(); i++)
+	CPUs[0] = holdee.threadInfo.at(pos);	
+	while(CPUs[0]->remaining_time != 0)
 	{
-				
-		//CPUs[i]->tid = holdee.threadInfo.front().tid;
-		//CPUs[i]->remaining_time = holdee.threadInfo.front().remaining_time;
-		//CPUs[i]->arriving_time = holdee.threadInfo.front().arriving_time;
-		//CPUs[i]->priority = holdee.threadInfo.front().priority;
-		CPUs[i] = holdee.threadInfo.front();	
-		holdee.threadInfo.erase(holdee.threadInfo.begin());
-
+		holdee.threadInfo.erase(holdee.threadInfo.begin() + pos);
+		CPUs[0]= holdee.threadInfo.at(retminarr(holdee.threadInfo));
 	}
 	return true;
 
@@ -112,3 +108,27 @@ bool MyScheduler::PBS_fun()
 return false;
 
 }
+
+int MyScheduler::retminarr(std::vector<ThreadDescriptorBlock*> threadInfo)
+{
+	int low,pos;
+	//ThreadDescriptorBlock *holder = new ThreadDescriptorBlock;
+	low= threadInfo.at(0)->arriving_time;
+	pos=0;	
+	//cout << threadInfo.size() << endl;
+	for(int i=1; i < threadInfo.size(); i++)
+	{	
+		if(low >= threadInfo.at(i)->arriving_time)
+		{
+			low = threadInfo.at(i)->arriving_time;
+			pos=i;
+		
+		}
+		
+
+	}
+	return pos;
+
+}
+
+
