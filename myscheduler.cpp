@@ -11,8 +11,40 @@ void MyScheduler::CreateThread(int arriving_time, int remaining_time, int priori
 	hold->remaining_time=remaining_time;
 	hold->arriving_time= arriving_time;
 	hold->priority = priority;
+	
+	switch(policy)
+	{
+		case FCFS://First Come First Serve
+			
 
-	holdee.threadInfo.push_back(hold);
+			if( holdee.threadInfo.empty)
+			{
+				holdee.threadInfo.insert(hold);
+			}
+			else if(holdee.threadInfo.front()->arriving_time <= arriving_time)
+			{
+				holdee.threadInfo.emplace_front(hold);
+			}
+			else
+			{
+
+			}
+			break;
+		case STRFwoP:	//Shortest Time Remaining First, without preemption
+			
+			break;
+		case STRFwP:	//Shortest Time Remaining First, with preemption
+			
+			break;
+		case PBS:		//Priority Based Scheduling, with preemption
+			
+			break;
+		default :
+			cout<<"Invalid policy!";
+			throw 0;
+	}
+
+	//holdee.threadInfo.push_back(hold);
 	
 }
 

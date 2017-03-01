@@ -9,18 +9,21 @@
    which they might find helpful.*/
 
 #include "scheduler.h"
-#include <vector>
+//#include <vector>
+#include <list>
 
 //Define your data structure here.
 struct Holder{
 
-	std::vector<ThreadDescriptorBlock*> threadInfo;
+	//std::vector<ThreadDescriptorBlock*> threadInfo;
+	std::list<ThreadDescriptorBlock*, > threadInfo;
 };
 
 class MyScheduler: public Scheduler {
 private:
-
+	
 	Holder holdee;
+	
 public:
 	
 	MyScheduler(Policy p, unsigned int n) : Scheduler(p, n) {}
