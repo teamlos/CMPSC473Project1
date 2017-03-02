@@ -33,4 +33,6 @@ public:
 	bool STRFwP_fun();
 	bool PBS_fun();
 	int retminarr(std::vector<ThreadDescriptorBlock*> threadInfo);
+	int retminrem(std::vector<ThreadDescriptorBlock*> threadInfo);
+	int openCpu();
 };

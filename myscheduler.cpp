@@ -74,22 +74,74 @@ bool MyScheduler::Dispatch()
 }
 
 bool MyScheduler::FCFS_fun()
-{
-	int pos= retminarr(holdee.threadInfo);
-	
-	CPUs[0] = holdee.threadInfo.at(pos);	
-	while(CPUs[0]->remaining_time != 0)
-	{
+{	
+	while(!holdee.threadInfo.empty())
+	{	
+		int pos= retminarr(holdee.threadInfo);
+		int openCPU = openCpu();
+
+		while(openCPU == -1)
+		{
+			openCPU = openCpu();
+			if (openCPU == -1)
+			{
+				return true;
+			}
+		}
+		CPUs[openCPU]=holdee.threadInfo.at(pos);
 		holdee.threadInfo.erase(holdee.threadInfo.begin() + pos);
-		CPUs[0]= holdee.threadInfo.at(retminarr(holdee.threadInfo));
+		while(CPUs[openCPU]->remaining_time != 0)
+		{
+			return true;
+		}
+		
 	}
-	return true;
+	for(int i =0; i< (signed)num_cpu;i++)
+	{
+		if( CPUs[i] != NULL)
+		{
+			return true;
+		}	
+
+	}
+
+	return false;
 
 }
 
 
 bool MyScheduler::STRFwoP_fun()
 {
+
+	while(!holdee.threadInfo.empty())
+	{	
+		int pos= retminrem(holdee.threadInfo);
+		int openCPU = openCpu();
+
+		while(openCPU == -1)
+		{
+			openCPU = openCpu();
+			if (openCPU == -1)
+			{
+				return true;
+			}
+		}
+		CPUs[openCPU]=holdee.threadInfo.at(pos);
+		holdee.threadInfo.erase(holdee.threadInfo.begin() + pos);
+		while(CPUs[openCPU]->remaining_time != 0)
+		{
+			return true;
+		}
+		
+	}
+	for(int i =0; i< (signed)num_cpu;i++)
+	{
+		if( CPUs[i] != NULL)
+		{
+			return true;
+		}	
+
+	}
 
 	return false;
 
@@ -112,11 +164,9 @@ return false;
 int MyScheduler::retminarr(std::vector<ThreadDescriptorBlock*> threadInfo)
 {
 	int low,pos;
-	//ThreadDescriptorBlock *holder = new ThreadDescriptorBlock;
 	low= threadInfo.at(0)->arriving_time;
 	pos=0;	
-	//cout << threadInfo.size() << endl;
-	for(int i=1; i < threadInfo.size(); i++)
+	for(int i=1; i < (signed)threadInfo.size(); i++)
 	{	
 		if(low >= threadInfo.at(i)->arriving_time)
 		{
@@ -131,4 +181,41 @@ int MyScheduler::retminarr(std::vector<ThreadDescriptorBlock*> threadInfo)
 
 }
 
+int MyScheduler::retminrem(std::vector<ThreadDescriptorBlock*> threadInfo)
+{
+	int low,pos;
+	low= threadInfo.at(0)->remaining_time;
+	pos=0;	
+	for(int i=1; i < (signed)threadInfo.size(); i++)
+	{	
+		if(low >= threadInfo.at(i)->remaining_time)
+		{
+			low = threadInfo.at(i)->remaining_time;
+			pos=i;
+		
+		}
+		
+
+	}
+	return pos;
+
+}
+
+int MyScheduler::openCpu()
+{
+	int open;
+	for(int i=0; i < (signed)num_cpu; i++)
+	{
+		if(CPUs[i] == NULL)
+		{
+			return i;
+		}
+		else
+		{
+			open = -1;
+		}
+	}
+
+	return open;
+}
 
