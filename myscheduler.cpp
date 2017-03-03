@@ -6,44 +6,13 @@ void MyScheduler::CreateThread(int arriving_time, int remaining_time, int priori
 {	
 	//Function to Create Thread(s) and insert them in the student
 	//defined data structure
+	
 	ThreadDescriptorBlock *hold = new ThreadDescriptorBlock;
 	hold->tid= tid;
 	hold->remaining_time=remaining_time;
 	hold->arriving_time= arriving_time;
 	hold->priority = priority;
 	
-	/*switch(policy)
-	{
-		case FCFS://First Come First Serve
-			
-
-			if( holdee.threadInfo.size() == 0)
-			{
-				holdee.threadInfo.push_back(hold);
-			}
-			else if(holdee.threadInfo.front()->arriving_time <= arriving_time)
-			{
-				holdee.threadInfo.emplace(holdee.threadInfo.begin(),hold);
-			}
-			else
-			{
-
-			}
-			break;
-		case STRFwoP:	//Shortest Time Remaining First, without preemption
-			
-			break;
-		case STRFwP:	//Shortest Time Remaining First, with preemption
-			
-			break;
-		case PBS:		//Priority Based Scheduling, with preemption
-			
-			break;
-		default :
-			cout<<"Invalid policy!";
-			throw 0;
-	}
-*/
 	holdee.threadInfo.push_back(hold);
 	
 }
@@ -156,6 +125,38 @@ bool MyScheduler::STRFwP_fun()
 
 bool MyScheduler::PBS_fun()
 {
+	
+	while(!holdee.threadInfo.empty())
+	{	
+		int pos= retmaxp(holdee.threadInfo);
+		int openCPU = openCpu();
+
+		while(openCPU == -1)
+		{
+			openCPU = openCpu();
+			if (openCPU == -1)
+			{
+				return true;
+			}
+		}
+		CPUs[openCPU]=holdee.threadInfo.at(pos);
+		holdee.threadInfo.erase(holdee.threadInfo.begin() + pos);
+		while(CPUs[openCPU]->remaining_time != 0)
+		{
+			return true;
+		}
+		
+	}
+	for(int i =0; i< (signed)num_cpu;i++)
+	{
+		if( CPUs[i] != NULL)
+		{
+			return true;
+		}	
+
+	}
+
+
 
 return false;
 
@@ -191,6 +192,25 @@ int MyScheduler::retminrem(std::vector<ThreadDescriptorBlock*> threadInfo)
 		if(low >= threadInfo.at(i)->remaining_time)
 		{
 			low = threadInfo.at(i)->remaining_time;
+			pos=i;
+		
+		}
+		
+
+	}
+	return pos;
+
+}
+int MyScheduler::retmaxp(std::vector<ThreadDescriptorBlock*> threadInfo)
+{
+	int high,pos;
+	high= threadInfo.at(0)->priority;
+	pos=0;	
+	for(int i=1; i < (signed)threadInfo.size(); i++)
+	{	
+		if(high <= threadInfo.at(i)->priority)
+		{
+			high = threadInfo.at(i)->priority;
 			pos=i;
 		
 		}

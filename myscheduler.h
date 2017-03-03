@@ -34,5 +34,6 @@ public:
 	bool PBS_fun();
 	int retminarr(std::vector<ThreadDescriptorBlock*> threadInfo);
 	int retminrem(std::vector<ThreadDescriptorBlock*> threadInfo);
+	int retmaxp(std::vector<ThreadDescriptorBlock*> threadInfo);
 	int openCpu();
 };
